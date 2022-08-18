@@ -27,6 +27,7 @@ import React, { useMemo, useState } from 'react';
 import { FieldExtensionOptions } from '../../../extensions';
 import { TemplateParameterSchema } from '../../../types';
 import { useTemplateSchema } from './useTemplateSchema';
+import validator from '@rjsf/validator-ajv6';
 
 const useStyles = makeStyles(theme => ({
   backButton: {
@@ -81,6 +82,7 @@ export const Stepper = (props: StepperProps) => {
       </MuiStepper>
       <div className={styles.formWrapper}>
         <Form
+          validator={validator}
           formData={formState}
           schema={steps[activeStep].schema}
           uiSchema={steps[activeStep].uiSchema}

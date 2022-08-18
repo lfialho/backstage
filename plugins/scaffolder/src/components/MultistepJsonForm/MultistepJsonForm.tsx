@@ -30,14 +30,14 @@ import {
   featureFlagsApiRef,
 } from '@backstage/core-plugin-api';
 import { FormProps, IChangeEvent, UiSchema, withTheme } from '@rjsf/core';
-import { Theme as MuiTheme } from '@rjsf/material-ui';
+import { Theme } from '@rjsf/material-ui';
+import validator from '@rjsf/validator-ajv6';
 import React, { useState } from 'react';
 import { transformSchemaToProps } from './schema';
 import { Content, StructuredMetadataTable } from '@backstage/core-components';
 import cloneDeep from 'lodash/cloneDeep';
 import * as fieldOverrides from './FieldOverrides';
 
-const Form = withTheme(MuiTheme);
 type Step = {
   schema: JsonObject;
   title: string;
@@ -120,6 +120,7 @@ export const MultistepJsonForm = (props: Props) => {
     widgets,
     finishButtonLabel,
   } = props;
+  const Form = withTheme(Theme);
   const [activeStep, setActiveStep] = useState(0);
   const [disableButtons, setDisableButtons] = useState(false);
   const errorApi = useApi(errorApiRef);
@@ -203,6 +204,7 @@ export const MultistepJsonForm = (props: Props) => {
               </StepLabel>
               <StepContent key={title}>
                 <Form
+                  validator={validator}
                   showErrorList={false}
                   fields={{ ...fieldOverrides, ...fields }}
                   widgets={widgets}
