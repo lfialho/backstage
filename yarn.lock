@@ -14638,9 +14638,9 @@ grouped-queue@^2.0.0:
   integrity sha512-/PiFUa7WIsl48dUeCvhIHnwNmAAzlI/eHoJl0vu3nsFA366JleY7Ff8EVTplZu5kO0MIdZjKTTnzItL61ahbnw==
 
 grpc-docs@^1.0.6, grpc-docs@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/grpc-docs/-/grpc-docs-1.1.2.tgz#021d065f8a386bdc07d16f80a8ab604cddefba06"
-  integrity sha512-IUQJpDNgCgq5aL1OWkcvK2Yeky0tscEOI0rDLb4fNxXAOgamrsEI/14aNX+DRzGq3gs/NTF9xU7YqN2kj3OiFA==
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/grpc-docs/-/grpc-docs-1.1.3.tgz#23f775a56e86fd9b168a65bb8ad70c3014fdd4a2"
+  integrity sha512-YyeGEe44wxS84QcWD9mWQTJadodjCq5eLaqE2+lYa6cULXGUdHMBu8JCg0zZvVIH0QSlgE7P1rz/Fl8knr/gKA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     "@types/minimatch" "^3.0.5"
