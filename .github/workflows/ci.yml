@@ -32,6 +32,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/ # Needed for auth
 
+      - name: node-canvas dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev
+
       - name: yarn install
         uses: backstage/actions/yarn-install@v0.5.3
         with:
