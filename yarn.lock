@@ -3048,7 +3048,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@backstage/cli@^0.18.2-next.0, @backstage/cli@workspace:packages/cli":
+"@backstage/cli@^0.18.2-next.0, @backstage/cli@workspace:*, @backstage/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@backstage/cli@workspace:packages/cli"
   dependencies:
@@ -3186,7 +3186,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@backstage/codemods@workspace:packages/codemods":
+"@backstage/codemods@workspace:*, @backstage/codemods@workspace:packages/codemods":
   version: 0.0.0-use.local
   resolution: "@backstage/codemods@workspace:packages/codemods"
   dependencies:
@@ -3447,7 +3447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/create-app@workspace:packages/create-app":
+"@backstage/create-app@workspace:*, @backstage/create-app@workspace:packages/create-app":
   version: 0.0.0-use.local
   resolution: "@backstage/create-app@workspace:packages/create-app"
   dependencies:
@@ -13277,7 +13277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@techdocs/cli@workspace:packages/techdocs-cli":
+"@techdocs/cli@workspace:*, @techdocs/cli@workspace:packages/techdocs-cli":
   version: 0.0.0-use.local
   resolution: "@techdocs/cli@workspace:packages/techdocs-cli"
   dependencies:
@@ -21140,7 +21140,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"e2e-test@workspace:packages/e2e-test":
+"e2e-test@workspace:*, e2e-test@workspace:packages/e2e-test":
   version: 0.0.0-use.local
   resolution: "e2e-test@workspace:packages/e2e-test"
   dependencies:
@@ -35817,6 +35817,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
+    "@backstage/cli": "workspace:*"
+    "@backstage/codemods": "workspace:*"
+    "@backstage/create-app": "workspace:*"
     "@changesets/cli": ^2.14.0
     "@manypkg/get-packages": ^1.1.3
     "@microsoft/api-documenter": ^7.17.11
@@ -35825,11 +35828,13 @@ __metadata:
     "@microsoft/tsdoc": ^0.14.1
     "@octokit/rest": ^19.0.3
     "@spotify/prettier-config": ^14.0.0
+    "@techdocs/cli": "workspace:*"
     "@types/node": ^16.11.26
     "@types/webpack": ^5.28.0
     command-exists: ^1.2.9
     concurrently: ^7.0.0
     cross-env: ^7.0.0
+    e2e-test: "workspace:*"
     eslint-plugin-notice: ^0.9.10
     fs-extra: 10.1.0
     husky: ^8.0.0
