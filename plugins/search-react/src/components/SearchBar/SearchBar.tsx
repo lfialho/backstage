@@ -20,6 +20,9 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  ComponentType,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import useDebounce from 'react-use/lib/useDebounce';
 import {
@@ -37,12 +40,21 @@ import {
   useApi,
 } from '@backstage/core-plugin-api';
 
-import {
-  SearchContextProvider,
-  useSearch,
-  useSearchContextCheck,
-} from '../../context';
+import { SearchContextProvider, useSearch } from '../../context';
 import { TrackSearch } from '../SearchTracker';
+import { Autocomplete, AutocompleteProps } from '@material-ui/lab';
+
+/**
+ * Wraps a component in local search context when there is no parent search context defined.
+ * @internal
+ */
+const withSearchContext = <T extends {}>(Component: ComponentType<T>) => {
+  return (props: T) => (
+    <SearchContextProvider useParentContext>
+      <Component {...props} />
+    </SearchContextProvider>
+  );
+};
 
 /**
  * Props for {@link SearchBarBase}.
@@ -78,7 +90,6 @@ export const SearchBarBase = ({
 }: SearchBarBaseProps) => {
   const configApi = useApi(configApiRef);
   const [value, setValue] = useState<string>(defaultValue as string);
-  const hasSearchContext = useSearchContextCheck();
 
   useEffect(() => {
     setValue(prevValue =>
@@ -129,7 +140,7 @@ export const SearchBarBase = ({
     </InputAdornment>
   );
 
-  const searchBar = (
+  return (
     <TrackSearch>
       <InputBase
         data-testid="search-bar-next"
@@ -145,45 +156,70 @@ export const SearchBarBase = ({
       />
     </TrackSearch>
   );
-
-  return hasSearchContext ? (
-    searchBar
-  ) : (
-    <SearchContextProvider>{searchBar}</SearchContextProvider>
-  );
 };
+
+const useSearchBarState = (
+  defaultValue: unknown,
+): [string, Dispatch<SetStateAction<string>>] => {
+  const { term: value, setTerm: setValue } = useSearch();
+
+  // Set term if a default value is provided
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(String(defaultValue));
+    }
+  }, [defaultValue, setValue]);
+
+  return [value, setValue];
+};
+
+/**
+ * Props for {@link SearchBarInput}.
+ *
+ * @public
+ */
+export type SearchBarInputProps = Partial<SearchBarBaseProps>;
+
+/**
+ * Recommended search bar input when you use the Search Provider or Search Context.
+ *
+ * @public
+ */
+export const SearchBarInput = withSearchContext(
+  ({ value: defaultValue = '', onChange, ...rest }: SearchBarInputProps) => {
+    const [value, setValue] = useSearchBarState(defaultValue);
+
+    const handleChange = useCallback(
+      (newValue: string) => {
+        if (onChange) {
+          onChange(newValue);
+        } else {
+          setValue(newValue);
+        }
+      },
+      [onChange, setValue],
+    );
+
+    return (
+      <AnalyticsContext
+        attributes={{ pluginId: 'search', extension: 'SearchBar' }}
+      >
+        <SearchBarBase {...rest} value={value} onChange={handleChange} />
+      </AnalyticsContext>
+    );
+  },
+);
 
 /**
  * Props for {@link SearchBar}.
- *
+ * @deprecated Use {@link SearchBarInputProps} instead.
  * @public
  */
-export type SearchBarProps = Partial<SearchBarBaseProps>;
+export type SearchBarProps = SearchBarInputProps;
 
 /**
- * Recommended search bar when you use the Search Provider or Search Context.
- *
+ * Recommended search bar input when you use the Search Provider or Search Context.
+ * @deprecated Use {@link SearchBarInput} instead.
  * @public
  */
-export const SearchBar = ({ onChange, ...props }: SearchBarProps) => {
-  const { term, setTerm } = useSearch();
-
-  const handleChange = useCallback(
-    (newValue: string) => {
-      if (onChange) {
-        onChange(newValue);
-      } else {
-        setTerm(newValue);
-      }
-    },
-    [onChange, setTerm],
-  );
-
-  return (
-    <AnalyticsContext
-      attributes={{ pluginId: 'search', extension: 'SearchBar' }}
-    >
-      <SearchBarBase value={term} onChange={handleChange} {...props} />
-    </AnalyticsContext>
-  );
-};
+export const SearchBar = SearchBarInput;
