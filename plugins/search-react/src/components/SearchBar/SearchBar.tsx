@@ -30,6 +30,7 @@ import {
   InputBaseProps,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearButton from '@material-ui/icons/Clear';
@@ -223,3 +224,86 @@ export type SearchBarProps = SearchBarInputProps;
  * @public
  */
 export const SearchBar = SearchBarInput;
+
+/**
+ * Props for {@link SearchBarAutocomplete}.
+ *
+ * @public
+ */
+export type SearchBarAutocompleteProps<
+  T,
+  Multiple extends boolean | undefined = undefined,
+  DisableClearable extends boolean | undefined = undefined,
+  FreeSolo extends boolean | undefined = undefined,
+> = Omit<
+  AutocompleteProps<T, Multiple, DisableClearable, FreeSolo>,
+  'renderInput' | 'inputValue' | 'onInputChange'
+> & {
+  inputProps?: SearchBarInputProps;
+};
+
+/**
+ * Recommended search bar autocomplete when you use the Search Provider or Search Context.
+ *
+ * @public
+ */
+export const SearchBarAutocomplete = withSearchContext(
+  function SearchBarAutocompleteComponent<
+    T,
+    Multiple extends boolean | undefined = undefined,
+    DisableClearable extends boolean | undefined = undefined,
+    FreeSolo extends boolean | undefined = undefined,
+  >({
+    loading,
+    fullWidth,
+    inputProps = {},
+    ...rest
+  }: SearchBarAutocompleteProps<T, Multiple, DisableClearable, FreeSolo>) {
+    const {
+      value: defaultInputValue,
+      endAdornment: inputEndAdornment,
+      onChange: onInputChange,
+      ...restInput
+    } = inputProps;
+
+    const [inputValue, setInputValue] = useSearchBarState(defaultInputValue);
+
+    const handleInputChange = useCallback(
+      (newValue: string) => {
+        if (onInputChange) {
+          onInputChange(newValue);
+        } else {
+          setInputValue(newValue);
+        }
+      },
+      [onInputChange, setInputValue],
+    );
+
+    return (
+      <Autocomplete
+        {...rest}
+        data-testid="search-bar-autocomplete"
+        fullWidth={fullWidth}
+        renderInput={params => (
+          <SearchBarInput
+            {...params}
+            {...restInput}
+            value={inputValue}
+            onChange={handleInputChange}
+            endAdornment={
+              loading ? (
+                <CircularProgress
+                  data-testid="search-bar-autocomplet-progress"
+                  color="inherit"
+                  size={20}
+                />
+              ) : (
+                inputEndAdornment
+              )
+            }
+          />
+        )}
+      />
+    );
+  },
+);

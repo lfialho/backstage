@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-export { SearchBar, SearchBarBase, SearchBarInput } from './SearchBar';
+export {
+  SearchBar,
+  SearchBarBase,
+  SearchBarInput,
+  SearchBarAutocomplete,
+} from './SearchBar';
 export type {
   SearchBarProps,
   SearchBarBaseProps,
   SearchBarInputProps,
+  SearchBarAutocompleteProps,
 } from './SearchBar';
