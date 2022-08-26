@@ -19,10 +19,12 @@ export {
   SearchBarBase,
   SearchBarInput,
   SearchBarAutocomplete,
+  SearchBarAutocompleteDefaultOption,
 } from './SearchBar';
 export type {
   SearchBarProps,
   SearchBarBaseProps,
   SearchBarInputProps,
   SearchBarAutocompleteProps,
+  SearchBarAutocompleteDefaultOptionProps,
 } from './SearchBar';

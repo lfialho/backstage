@@ -23,6 +23,7 @@ import React, {
   ComponentType,
   Dispatch,
   SetStateAction,
+  ReactNode,
 } from 'react';
 import useDebounce from 'react-use/lib/useDebounce';
 import {
@@ -31,6 +32,11 @@ import {
   InputAdornment,
   IconButton,
   CircularProgress,
+  ListItem,
+  ListItemProps,
+  ListItemIcon,
+  ListItemText,
+  ListItemTextProps,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearButton from '@material-ui/icons/Clear';
@@ -306,4 +312,46 @@ export const SearchBarAutocomplete = withSearchContext(
       />
     );
   },
+);
+
+/**
+ * Props for {@link SearchBarAutocompleteDefaultOption}.
+ *
+ * @public
+ */
+export type SearchBarAutocompleteDefaultOptionProps = ListItemProps & {
+  button: boolean;
+  icon?: ReactNode;
+  primaryText: ListItemTextProps['primary'];
+  primaryTextTypographyProps?: ListItemTextProps['primaryTypographyProps'];
+  secondaryText?: ListItemTextProps['secondary'];
+  secondaryTextTypographyProps?: ListItemTextProps['secondaryTypographyProps'];
+  disableTextTypography?: ListItemTextProps['disableTypography'];
+};
+
+/**
+ * A default search bar autocomplete component.
+ *
+ * @public
+ */
+export const SearchBarAutocompleteDefaultOption = ({
+  icon,
+  button = false,
+  primaryText,
+  primaryTextTypographyProps,
+  secondaryText,
+  secondaryTextTypographyProps,
+  disableTextTypography,
+  ...rest
+}: SearchBarAutocompleteDefaultOptionProps) => (
+  <ListItem {...rest}>
+    {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+    <ListItemText
+      primary={primaryText}
+      primaryTypographyProps={primaryTextTypographyProps}
+      secondary={secondaryText}
+      secondaryTypographyProps={secondaryTextTypographyProps}
+      disableTypography={disableTextTypography}
+    />
+  </ListItem>
 );
